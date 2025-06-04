@@ -1,0 +1,75 @@
+name: Roadmap Item
+description: A new item for the roadmap
+labels: ["roadmap"]
+projects: []
+assignees: []
+body:
+  - type: input
+    id: organiser
+    attributes:
+      label: Organiser
+      description: Which organiser or organisers?
+      placeholder: ex. PSC, your company
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: dropdown
+    id: planned-start
+    attributes:
+      label: Planned Start
+      description: When is work planned to start?
+      options:
+        - Not Planned
+        - 2025 Q1
+        - 2025 Q2
+        - 2025 Q3
+        - 2025 Q4
+        - 2026 Q1
+        - 2026 Q2
+        - 2026 Q3
+        - 2026 Q4
+        - 2027 Q1
+        - 2027 Q2
+        - 2027 Q3
+        - 2027 Q4
+      default: 0
+    validations:
+      required: true
+  - type: dropdown
+    id: planned-finish
+    attributes:
+      label: Planned Finish
+      description: When is work planned to be finished?
+      options:
+        - Not Planned
+        - 2025 Q1
+        - 2025 Q2
+        - 2025 Q3
+        - 2025 Q4
+        - 2026 Q1
+        - 2026 Q2
+        - 2026 Q3
+        - 2026 Q4
+        - 2027 Q1
+        - 2027 Q2
+        - 2027 Q3
+        - 2027 Q4
+      default: 0
+    validations:
+      required: true
+  - type: checkboxes
+    id: funding
+    attributes:
+      label: Funding
+      options:
+        - label: Full funding secured
+          required: false
+        - label: Partial funding secured
+          required: false
+        - label: Looking for funding
+          required: false
