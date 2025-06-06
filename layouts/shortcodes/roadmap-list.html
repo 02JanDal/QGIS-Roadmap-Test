@@ -1,0 +1,61 @@
+{{ $data := slice }}
+{{ $repo := .Site.Params.githubRoadmapRepo }}
+{{ $token := .Site.Params.githubToken }}
+{{ $url := "https://api.github.com/repos/02JanDal/QGIS-Roadmap-Test/issues" }}
+{{ $opts := dict "headers" (dict "Authorization" (print "Bearer " $token)) }}
+{{ with resources.GetRemote $url $opts }}
+  {{ with .Err }}
+    {{ errorf "%s" . }}
+  {{ else }}
+    {{ $rawData := . | transform.Unmarshal }}
+    {{ range $rawData }}
+      {{ $start := index (index (findRESubmatch `# Planned Start\n\n+([^\n]*)` .body) 0) 1 }}
+      {{ $finish := index (index (findRESubmatch `# Planned Finish\n\n+([^\n]*)` .body) 0) 1 }}
+      {{ $description := index (index (findRESubmatch `# Description\n\n+([^\n]*)` .body) 0) 1 }}
+      {{ $data = $data | append (merge . (dict
+        "start" $start
+        "finish" $finish
+        "description" $description
+      )) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<div class="columns">
+  <div class="column">
+    <h3>Now</h3>
+    {{ range where $data "start" "le" "2025Q2" }}
+      <div class="container rich">
+        <div class="cont coloring-3 px-4 py-3">
+          <h4 class="mb-2">{{ .title }}</h4>
+          <p class="mb-2">{{ .description }}</p>
+          <p><a href="/items/{{ .number }}">Read more</a></p>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+  <div class="column">
+    <h3>Soon</h3>
+    {{ range where (where $data "start" "gt" "2025Q2") "start" "le" "2025Q4" }}
+      <div class="container rich">
+        <div class="cont coloring-5 px-4 py-3">
+          <h4 class="mb-2">{{ .title }}</h4>
+          <p class="mb-2">{{ .description }}</p>
+          <p><a href="/items/{{ .number }}">Read more</a></p>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+  <div class="column">
+    <h3>Future</h3>
+    {{ range where $data "start" "gt" "2025Q4" }}
+      <div class="container rich">
+        <div class="cont coloring-6 px-4 py-3">
+          <h4 class="mb-2">{{ .title }}</h4>
+          <p class="mb-2">{{ .description }}</p>
+          <p><a href="/items/{{ .number }}">Read more</a></p>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</div>

@@ -1,0 +1,31 @@
+{{ define "main" }}
+    <main class="section">
+        <div class="container">
+            <h2>{{ .Title }}</h2>
+
+            {{ .Content }}
+
+            <h1>Includes</h1>
+
+            {{ $issues := dict }}
+            {{ $token := .Site.Params.githubToken }}
+            {{ $url := print .Params.url "/sub_issues" }}
+            {{ $opts := dict "headers" (dict "Authorization" (print "Bearer " $token)) }}
+            {{ with resources.GetRemote $url $opts }}
+              {{ with .Err }}
+                {{ errorf "%s" . }}
+              {{ else }}
+                {{ $issues = . | transform.Unmarshal }}
+              {{ end }}
+            {{ end }}
+
+            <ul>
+                {{ range $issues }}
+                  <li>
+                      <a href="{{ .html_url }}">{{ .title }}</a>
+                  </li>
+                {{ end }}
+            </ul>
+        </div>
+    </main>
+{{ end }}

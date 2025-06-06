@@ -1,14 +1,16 @@
 ---
 type: "page"
-title: "QGIS Planet"
-subtitle: "Your go-to source for the latest posts and updates related to QGIS."
+title: "QGIS Roadmap"
+subtitle: ""
 
 draft: false
 heroSize: "is-medium"
 heroLogo: "img/logosign.svg"
 HeroImage: "img/hegobg1.webp"
 HasBanner: true
-ButtonText: "Start Reading" 
-ButtonLink: "posts/"
+ButtonText: "Show the roadmap" 
+ButtonLink: "items/"
 LabelText: "Free and Open Source"
 ---
+
+{{< roadmap-list >}}

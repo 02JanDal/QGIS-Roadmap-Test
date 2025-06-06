@@ -1,0 +1,23 @@
+{{ $data := dict }}
+{{ $repo := .Site.Params.githubRoadmapRepo }}
+{{ $token := .Site.Params.githubToken }}
+{{ $url := "https://api.github.com/repos/02JanDal/QGIS-Roadmap-Test/issues" }}
+{{ $opts := dict "headers" (dict "Authorization" (print "Bearer " $token)) }}
+{{ with resources.GetRemote $url $opts }}
+  {{ with .Err }}
+    {{ errorf "%s" . }}
+  {{ else }}
+    {{ $data = . | transform.Unmarshal }}
+  {{ end }}
+{{ end }}
+
+{{ range $data }}
+  {{ $.AddPage (dict
+    "content" (dict "mediaType" "text/markdown" "value" .body)
+    "kind" "page"
+    "path" .number
+    "params" .
+    "title" .title
+    )
+   }}
+{{ end }}
